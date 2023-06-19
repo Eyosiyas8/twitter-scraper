@@ -16,7 +16,8 @@ from sys import platform
 # import colored 
 from log import *
 import re
-from login import *
+from get_cookies import *
+# from login import *
 import csv
 from lxml import etree
 import configparser
@@ -32,7 +33,7 @@ config.read(elements_file)
 web_elements = config['WebElements']
 iteration_number = config['IterationNumber']
 login()
-print('session cookie',driver.get_cookie('session'))
+# print('session cookie',driver.get_cookie('session'))
 """
 if platform == "linux" or platform == "linux2":
     chro_path = os.path.join(basedir, '../chromedriver/chromedriver')

@@ -16,7 +16,8 @@ from sys import platform
 # import colored 
 from log import *
 import re
-from login import *
+# from login import *
+from get_cookies import *
 import csv
 from lxml import etree
 import configparser

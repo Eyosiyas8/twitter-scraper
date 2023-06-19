@@ -10,7 +10,8 @@ from selenium.common.exceptions import NoSuchElementException
 import os
 import pandas as pd
 import time
-from login import *
+# from login import *
+from get_cookies import *
 from sys import platform
 # from colored import stylize
 # import colored

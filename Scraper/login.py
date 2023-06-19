@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import os
+import pickle
 
 
 from selenium.webdriver.common.keys import Keys
@@ -16,8 +17,8 @@ from selenium.common.exceptions import NoSuchElementException
 
 chromedriver_autoinstaller.install()
 options = Options()
-options.headless = False
-chro_path = os.environ.get('CHROME_PATH')
+# options.add_argument('--headless')
+# chro_path = os.environ.get('CHROME_PATH')
 driver = webdriver.Chrome(options=options)
 
 driver.get("https://www.twitter.com/login")
@@ -89,3 +90,7 @@ def login():
         driver.get("https://www.twitter.com/login")
         login()
 
+# login()
+# time.sleep(2)
+# cookies = driver.get_cookies()
+# pickle.dump(cookies, open('cookies.pkl', "wb"))
