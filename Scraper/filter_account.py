@@ -64,7 +64,7 @@ def account_scraper():
                 tweet_id = ''.join(account_info)
                 if tweet_id not in tweet_ids:
                     tweet_ids.add(tweet_id)
-                    data.append(account_info)
+                    data.append({'name': account_info[0], 'username': account_info[1], 'description': account_info[2], 'profile_picture': account_info[3]})
         scroll_attempt = 0
         if len(data) >= 0 and len(data) < 5:
             pass
@@ -121,6 +121,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
             try:
                 data = account_scraper()
                 if data == []:
+                    error_log(phrase+' search phrase isn\'t correct')
                     pass
                 else:
                     # print('this is account info ', account_info)
@@ -149,6 +150,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
             try:
                 data = account_scraper()
                 if data == []:
+                    error_log(phrase+' search phrase isn\'t correct')
                     pass
                 else:
                     # print('this is account info ', account_info)

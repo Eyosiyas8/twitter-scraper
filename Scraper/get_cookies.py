@@ -17,7 +17,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 chromedriver_autoinstaller.install()
 options = Options()
-# options.add_argument('--headless')
+options.add_argument('--headless')
 # chro_path = os.environ.get('CHROME_PATH')
 driver = webdriver.Chrome(options=options)
 
@@ -31,7 +31,8 @@ basedir = os.path.dirname(os.path.abspath(__file__))
 #log in into an account
 
 time.sleep(2)
-cookies = pickle.load(open('cookies.pkl', "rb"))
+new_cookie = os.path.join(basedir, 'cookies.pkl')
+cookies = pickle.load(open(new_cookie, "rb"))
 def login():
     for cookie in cookies:
         try:

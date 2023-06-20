@@ -166,7 +166,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
             if profile[0] !=None and profile[1] != None:
                 append_data(profile, data)
             else:
-                error_log('Account dosn\'t exist')
+                error_log(username+' Account dosn\'t exist')
                 continue
 
             sleep(1)
@@ -203,7 +203,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
             if profile[1] !=None and profile[2] != None:
                 append_data(profile, data)
             else:
-                error_log('Account dosn\'t exist')
+                error_log(username+' Account dosn\'t exist')
                 continue
 
 driver.close()

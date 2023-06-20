@@ -56,7 +56,7 @@ def structure_keyword():
         time.sleep(3)
         print(len(tweet_elements))
         if len(tweet_elements) == 0:
-            error_log('Keyword isn\'t correct')
+            error_log(keyword+' Keyword isn\'t correct')
             break
         for tweet_element in tweet_elements:
             dom = etree.HTML(str(tweet_element))
@@ -74,7 +74,7 @@ def structure_keyword():
             'retweets_count': tweet[12], 'likes_count': tweet[13], 'views_count': tweet[14],
             'replies': [], 'reporting': {'is_reported': False, 'reporting_date': None, 'reported_by': None}})
         scroll_attempt = 0
-        if len(data) < 5:
+        if len(data) < 50:
             break
         while True:
             # check scroll position
