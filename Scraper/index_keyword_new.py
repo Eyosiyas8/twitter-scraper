@@ -60,7 +60,13 @@ def structure_keyword():
             break
         for tweet_element in tweet_elements:
             dom = etree.HTML(str(tweet_element))
-            tweet = keyword_scraper(keyword, dom)
+            try:
+                tweet = keyword_scraper(keyword, dom)
+                break
+            except urllib.error.URLError as e:
+                time.sleep(10)
+                print("Connection Error: ", {e})
+                error_log(e)
             if tweet[0] == None and tweet[1] == None:
                 continue
             if tweet:

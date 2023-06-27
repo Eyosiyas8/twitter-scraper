@@ -24,6 +24,7 @@ import configparser
 import requests
 from bs4 import BeautifulSoup
 
+
 basedir = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -32,7 +33,18 @@ elements_file = os.path.join(basedir, '../Authentication/elements_iteration.ini'
 config.read(elements_file)
 web_elements = config['WebElements']
 iteration_number = config['IterationNumber']
+
 login()
+
+# try:
+#     login()
+# except urllib.error.URLError as e:
+#     for i in range(3):
+#         time.sleep(5)
+#         login()
+#         error_log(e)
+
+
 # print('session cookie',driver.get_cookie('session'))
 """
 if platform == "linux" or platform == "linux2":
@@ -175,7 +187,7 @@ def scrape_user_timeline(main_username, dom):
     try:
         fullname = dom.xpath('.//span[@class="css-901oao css-16my406 css-1hf3ou5 r-poiln3 r-bcqeeo r-qvutc0"]/span')[0].text
         print(fullname)
-        username = dom.xpath('.//div[@class="css-901oao css-1hf3ou5 r-14j79pv r-18u37iz r-37j5jr r-1wvb978 r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-qvutc0"]/span')[0].text
+        username = dom.xpath('.//span[contains(text(), "@")]')[0].text
         print(username)
         time.sleep(0.2)
         try:
@@ -263,37 +275,6 @@ def scrape_user_timeline(main_username, dom):
             print(tweet_text)
         except:
             pass
-        # try:
-        #     comment1 = dom.xpath('.//div[@data-testid="tweetText"]/span')[0].text
-        #     print(comment1)
-        # except:
-        #     comment1 = ''
-        #     pass
-        # try: 
-        #     comment2 = dom.xpath('.//div[@data-testid="tweetText"]/div/span')[0].text
-        #     # print(comment2)
-        # except:
-        #     comment2 = ''
-        #     # print(type(comment2))
-        #     pass
-        # try:
-        #     comment3 = dom.xpath('.//div[@data-testid="tweetText"]/span[2]')[0].text
-        #     # print(comment3)
-        # except:
-        #     comment3 = ''
-        #     # print(type(comment3))
-        #     pass
-        # # time.sleep(0.5)
-        # if comment1 == None:
-        #     comment1 = ''
-        # if comment2 == None:
-        #     comment2 == ''
-        # if comment3 == None:
-        #     comment3 = ''
-        # tweet_text = str(comment1) + str(comment2) + str(comment3)
-        # print(tweet_text)
-        # tweet_text = full_text.text
-        # print(tweet_text)
         profile_image = ''
         try:
             image_links = dom.xpath('.//div[@class="css-1dbjc4n r-1adg3ll r-1udh08x"]//img')
@@ -333,119 +314,5 @@ def scrape_user_timeline(main_username, dom):
         element = wait.until(EC.presence_of_element_located((By.XPATH, '//div[@data-testid = "app-bar-close"]'))).click()
     tweet = (fullname, username, tweet_id, tweet_link, conversation_id, post_date, tweet_text, json.dumps(list(image_link)), json.dumps(list(hashtags)), json.dumps(list(mentions)), json.dumps(list(external_links)), reply_count, retweet_count, likes_count, views_count)
     return tweet
-          
-
-
-
-
-
-# Scrapes user timeline with it's corresponding reply using twint
-# def tweet_scrapper(username, csv_file1):
-#     '''
-#     :param username: The username of the account from which the tweet will be scraped.
-#     :param csv_file1: The file in which all scraped tweets and their replies are saved.
-
-#     This function takes the username and the csv_file1 arguments and feed them to twints config format to scrape the timeline of the given username and replies to a given username before saving it to csv_file1.
-#     '''
-#     # Configuration for tweets
-#     c = twint.Config()
-#     c.Username = username
-#     c.Store_csv = True
-#     #c.Since = since
-#     c.Resume = 'tweet.raw'
-#     #c.Until = until
-#     c.Output = csv_file1
-#     c.Count = True
-#     # c.Proxy_host = "tor"
-#     c.Limit = 200
-#     #c.Search = Keyword
-#     #c.Verified = True 
-#     # twint.run.Search(c)
-
-#     # Run
-#     # Set iteration number to scrape more data
-#     # Log total numbre of scraped tweets in log/INFO.log
-#     try:
-#         for i in range(int(iteration_number.get('Account_tweet'))):
-#             # total_count = 0
-#             time.sleep(3)
-#             twint.run.Search(c)
-#         f1 = open(csv_file1, 'r', encoding='utf-8')
-#         row_count = sum(1 for row in f1) - 1
-#         print(row_count)
-        
- 
-#             # result=re.findall(r"\d", c.Count)
-#             # total_count = ''
-#             # for j in result:
-#             #     total_count += j
-#             #     print('the total count is '+total_count)
-#             # total_count = int(total_count)
-#             # print(total_count)
-#         # message = 'Number of scraped tweets is ' + str(row_count)
-#         # info_log(message)
-#         os.remove('tweet.raw')
-
-#     # Error handler
-#     # Log error in log/ERROR.log
-#     except Exception as e:
-#         message = str(e)+' Scraping for ' + username + '\'s account has failed '
-#         error_log(message)
-#         # stylize('Scraping for ' + username + '\'s account has failed ', colored.fg("red"))
-#         # stylize(e, colored.fg("grey_46"))
-    
-#     # Configuration for replies
-#     n = twint.Config()
-#     n.Search = "@" + username
-#     n.Replies = True
-#     n.Resume = 'reply.raw'
-#     n.Count = True
-#     #n.Since = since
-#     #n.Until = until
-#     n.To = username
-#     # n.Limit = 40
-#     n.Store_csv = True
-#     n.Output = csv_file1
-
-#     # Run
-#     # Set iteration number to scrape more data
-#     # Log total numbre of scraped tweets in log/INFO.log
-#     try:
-#         for i in range(int(iteration_number.get('Account_reply'))):
-#             # total_count = 0
-#             time.sleep(3)
-#             twint.run.Search(n)
-
-#             # result=re.findall(r"\d", c.Count)
-#             # total_count = ''
-#             # for i in result:
-#                 # total_count += i
-#             # total_count = int(total_count)
-#             # print(total_count)
-#         # message = 'Number of scraped replies is ' + str(total_count)
-#         # info_log(message)
-#         os.remove('reply.raw')
-
-#     # Error handler
-#     # Log error in log/ERROR.log
-#     except Exception as e:
-#         message = str(e)+' \nScraping for replies to ' + username + '\'s account has failed '
-#         error_log(message)
-#         # stylize('Scraping for replies to ' + username + '\'s account has failed ', colored.fg("red"))
-#         # stylize(e, colored.fg("grey_46"))
-
-
-'''
-with open("C:/Users/User/PycharmProjects/twitterScraper/venv/Scripts/Authentication/Document.txt","r", encoding='utf-8') as file:
-    lines = file.readlines()
-    lines = [line.rstrip() for line in lines]
-    for i in range(len(lines)):
-        username=lines[i]
-        url = "https://twitter.com/%s" % username
-        driver.get(url)
-        print(url)
-        profile_scraper()
-
-'''
 
 time.sleep(1)

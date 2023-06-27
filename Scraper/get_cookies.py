@@ -21,7 +21,7 @@ for i in range(3):
     try:
         chromedriver_autoinstaller.install()
         options = Options()
-        options.add_argument('--headless')
+        # options.add_argument('--headless')
         # chro_path = os.environ.get('CHROME_PATH')
         driver = webdriver.Chrome(options=options)
 

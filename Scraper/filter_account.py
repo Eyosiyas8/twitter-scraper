@@ -59,7 +59,14 @@ def account_scraper():
         time.sleep(5)
         for acc_element in acc_elements[:-1]:
             dom = etree.HTML(str(acc_element))
-            account_info = acc_info(dom)
+            try:
+                account_info = acc_info(dom)
+                break
+            except urllib.error.URLError as e:
+                time.sleep(10)
+                print("Connection Error: ", {e})
+                error_log(e)
+            
             if account_info and account_info[2] != None or account_info[3] != None:
                 tweet_id = ''.join(account_info)
                 if tweet_id not in tweet_ids:

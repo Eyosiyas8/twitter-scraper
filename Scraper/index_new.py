@@ -13,6 +13,8 @@ from log import *
 import sys
 from sentiment import *
 from reply_scraper import *
+import urllib.request
+import urllib.error
 
 # Initializing mongo db client
 db_connection = 'mongodb://localhost:27017/'
@@ -63,6 +65,7 @@ def structure_tweet():
     x=0
     y=1800
     last_position = driver.execute_script('return window.pageYOffset;')
+    tweet_links = []
     while scrolling:
         # wait = WebDriverWait(driver, 1)
         # element = wait.until(EC.presence_of_all_elements_located((By.XPATH, '//article[@data-testid = "tweet"]')))
@@ -81,13 +84,10 @@ def structure_tweet():
                 if tweet_id not in tweet_ids:
                     tweet_ids.add(tweet_id)
                     tweet_link = tweet[3]
+                    tweet_links.append(tweet_link)
                     tweet_text = tweet[6]
-                    # tweet_data = []
-                    # try:
-                    #     tweet_data = scrape_replies(username, tweet_link, tweet_text)
-                    # except Exception as e:
-                    #     print(e)
-                    #     error_log(e)
+                    tweet_id = tweet[2]
+                    tweet_data = []
                     if tweet[5] == 'None':
                         continue
                     else:
@@ -100,7 +100,6 @@ def structure_tweet():
                 print(tweet[3])
                 # tweet_link.append(tweet[3])
                 # print(tweet_link)
-            
 
         # print(tweet_data)
         scroll_attempt = 0
@@ -130,81 +129,121 @@ def structure_tweet():
             else:
                 last_position = curr_position
                 break
+    print('tweet link: ',tweet_links)
+    # try:
+    tweet_data = scrape_replies(username, tweet_links)
+    # except Exception as e:
+    #     print(e)
+    #     error_log(e)
+    for item in data:
+        for record in tweet_data:
+            if item['tweet_id'] == record['conversation_id']:
+                item['replies'].append(record)
+                if item['tweet'][1:50] in record['tweet']:
+                    print("the reply tweet is an extension of the parent tweet")
+                    item['tweet'] = record['tweet']
+                    item['replies'].remove(item['replies'][0])
+                    if item['tweet'][-3] == '1/2':
+                        pass
+                print(type(item['replies']))
     return data
 
 
 
 acc_name = os.path.join(basedir, '../Authentication/Document.txt')
-with open(acc_name, "r", encoding='utf-8') as file:
-    lines = file.readlines()
-    lines = [line.rstrip() for line in lines]
-    usernames = []
-    flag = False
+try:    
+    with open(acc_name, "r", encoding='utf-8') as file:
+        lines = file.readlines()
+        lines = [line.rstrip() for line in lines]
+        usernames = []
+        flag = False
 
-    for j in sys.argv[1:]:
-        usernames.append(j)
-    if len(usernames) >= 1:
-        for username in usernames:
-            url = "https://twitter.com/%s" % username
-            print("current session is {}".format(driver.session_id))
-            driver.get(url)
-            print(url)
-            # csv_file = os.path.join(basedir, '../csv_files/') + username + ".csv"
-            profile_info = []
-            # print(csv_file)
-            # csv_timeline = os.path.join(basedir, '../csv_files/tweets_') + username + ".csv"
-            
-            try:
+        for j in sys.argv[1:]:
+            usernames.append(j)
+        if len(usernames) >= 1:
+            for username in usernames:
+                url = "https://twitter.com/%s" % username
+                print("current session is {}".format(driver.session_id))
+                driver.get(url)
+                print(url)
+                # csv_file = os.path.join(basedir, '../csv_files/') + username + ".csv"
+                profile_info = []
+                # print(csv_file)
+                # csv_timeline = os.path.join(basedir, '../csv_files/tweets_') + username + ".csv"
+                
+                # try:
                 data = structure_tweet()
-            except Exception as e:
-                print(e)
-                error_log(str(e))
-                continue        
-            url = "https://twitter.com/%s" % username
-            driver.get(url)
-            profile = profile_scraper(username)
-            if profile[0] !=None and profile[1] != None:
-                append_data(profile, data)
-            else:
-                error_log(username+' Account dosn\'t exist')
-                continue
+                # except Exception as e:
+                #     print(e)
+                #     error_log(str(e))
+                #     continue        
+                url = "https://twitter.com/%s" % username
+                driver.get(url)
+                for i in range(3):
+                    try:
+                        profile = profile_scraper(username)
+                        break
+                    except urllib.error.URLError as e:
+                        time.sleep(10)
+                        print("Connection Error: ", {e})
+                        error_log(e)
+                if profile[0] !=None and profile[1] != None:
+                    append_data(profile, data)
+                else:
+                    error_log(username+' Account dosn\'t exist')
+                    continue
 
-            sleep(1)
+                sleep(1)
+                
             
-        
-    else:
-        for i in tqdm.tqdm(range(len(lines))):
-            print(type(lines))
-            print(lines)
-            print(type(i))
-            sleep(0.1)
-            print(lines[i])
-            username = lines[i]
-            url = "https://twitter.com/%s" % username
-            print("current session is {}".format(driver.session_id))
-            driver.get(url)
-            print(url)
-            # csv_file = os.path.join(basedir, '../csv_files/') + username + ".csv"
-            profile_info = []
-            # print(csv_file)
-            # csv_timeline = os.path.join(basedir, '../csv_files/tweets_') + username + ".csv"
-            
-            try:
-                data = structure_tweet()
-            except Exception as e:
-                print(e)
-                error_log(str(e))
-                continue
-            # try:
-            # scrape_replies(username, data)
-            url = "https://twitter.com/%s" % username
-            driver.get(url)
-            profile = profile_scraper(username)
-            if profile[1] !=None and profile[2] != None:
-                append_data(profile, data)
-            else:
-                error_log(username+' Account dosn\'t exist')
-                continue
+        else:
+            for i in tqdm.tqdm(range(len(lines))):
+                print(type(lines))
+                print(lines)
+                print(type(i))
+                sleep(0.1)
+                print(lines[i])
+                username = lines[i]
+                url = "https://twitter.com/%s" % username
+                print("current session is {}".format(driver.session_id))
+                driver.get(url)
+                print(url)
+                # csv_file = os.path.join(basedir, '../csv_files/') + username + ".csv"
+                profile_info = []
+                # print(csv_file)
+                # csv_timeline = os.path.join(basedir, '../csv_files/tweets_') + username + ".csv"
+                
+                try:
+                    data = structure_tweet()
+                except Exception as e:
+                    print(e)
+                    error_log(str(e))
+                    continue
+
+                # try:
+                # scrape_replies(username, data)
+                url = "https://twitter.com/%s" % username
+                driver.get(url)
+                for i in range(3):
+                    try:
+                        profile = profile_scraper(username)
+                        break
+                    except urllib.error.URLError as e:
+                        time.sleep(10)
+                        print("Connection Error: ", {e})
+                        error_log(e)
+
+                if profile[1] !=None and profile[2] != None:
+                    append_data(profile, data)
+                else:
+                    error_log(username+' Account dosn\'t exist')
+                    continue
+except urllib.error.URLError as e:
+    for i in range(3):
+        time.sleep(5)
+        print('f\"Connection Error: {e}\"')
+        error_log(e)
+        time.sleep(5)
 
 driver.close()
 '''out_file = open("file.json", "w", encoding='utf-8')
