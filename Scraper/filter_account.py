@@ -61,7 +61,6 @@ def account_scraper():
             dom = etree.HTML(str(acc_element))
             try:
                 account_info = acc_info(dom)
-                break
             except urllib.error.URLError as e:
                 time.sleep(10)
                 print("Connection Error: ", {e})
@@ -127,6 +126,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
             # Find all the tweet elements on the page
             try:
                 data = account_scraper()
+                print(data)
                 if data == []:
                     error_log(phrase+' search phrase isn\'t correct')
                     pass
@@ -156,6 +156,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
 
             try:
                 data = account_scraper()
+                print(data)
                 if data == []:
                     error_log(phrase+' search phrase isn\'t correct')
                     pass
@@ -171,41 +172,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
                 error_log(message)
                 continue
 
-            # csv_reply= os.path.join(basedir, '../csv_files/replies_') + username + ".csv"
-            # scrape_replies(username, csv_reply)
 
-
-
-            # csv_file1 = os.path.join(basedir, '../csv_files/raw_dump_') + username + ".csv"
-            # csv_file2 = os.path.join(basedir, '../csv_files/parent_tweet_') + username + ".csv"
-            # csv_file3 = os.path.join(basedir, '../csv_files/reply_of_') + username + ".csv"
-
-            # Remove raw_dump, parent and reply csv files before scraping if they already exist
-            # try:
-            #     os.remove(csv_file1)
-            #     os.remove(csv_file2)
-            #     os.remove(csv_file3)
-            
-            # Exception handling
-            # Logg a warning message to log/WARNING.log
-            # except Exception as e:
-            #     message = str(e)+' No Such File!'
-            #     warning_log(message)
-            #     print('No Such File!')
-            # # tweet_scrapper(username, csv_file1)
-
-            # Execute filter_username, filter_replies and data_structure methods
-
-            # filter_username(username, csv_file1, csv_timeline)
-            # filter_replies(username, csv_file1, csv_file3)
-            
-            # Exception handling
-            # Log error message to log/ERROR.log
-            # except Exception as e:
-            #     message = str(e)
-            #     error_log(message)
-            #     # stylize(e, colored.fg("grey_46"))
-            #     continue
             sleep(1)
 driver.close()
 
