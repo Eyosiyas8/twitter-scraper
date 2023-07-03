@@ -62,7 +62,6 @@ def structure_keyword():
             dom = etree.HTML(str(tweet_element))
             try:
                 tweet = keyword_scraper(keyword, dom)
-                break
             except urllib.error.URLError as e:
                 time.sleep(10)
                 print("Connection Error: ", {e})
@@ -80,7 +79,9 @@ def structure_keyword():
             'retweets_count': tweet[12], 'likes_count': tweet[13], 'views_count': tweet[14],
             'replies': [], 'reporting': {'is_reported': False, 'reporting_date': None, 'reported_by': None}})
         scroll_attempt = 0
-        if len(data) < 50:
+        if len(data) >= 0 and len(data) < 20:
+            pass
+        else:
             break
         while True:
             # check scroll position
