@@ -32,14 +32,14 @@ es=Elasticsearch([{'host':'localhost:9200','port':9200,'scheme':"http"}])
 
 def structure_keyword():
 
-    wait = WebDriverWait(driver, 10)
-    element = wait.until(EC.presence_of_element_located((By.XPATH, "//input[@aria-label='Search query']")))
-    element.send_keys(keyword)
-    element.send_keys(Keys.ENTER)
-    time.sleep(5)
-    wait = WebDriverWait(driver, 20)
-    element = wait.until(EC.presence_of_element_located((By.XPATH, ".//span[contains(text(), 'Latest')]")))
-    element.click()
+    # wait = WebDriverWait(driver, 10)
+    # element = wait.until(EC.presence_of_element_located((By.XPATH, "//input[@aria-label='Search query']")))
+    # element.send_keys(keyword)
+    # element.send_keys(Keys.ENTER)
+    # time.sleep(5)
+    # wait = WebDriverWait(driver, 20)
+    # element = wait.until(EC.presence_of_element_located((By.XPATH, ".//span[contains(text(), 'Latest')]")))
+    # element.click()
     # Define the URL for the user's timeline
     # Find all the tweet elements on the page
     data = []
@@ -115,7 +115,6 @@ with open(acc_name, "r", encoding='utf-8') as file:
     print("current session is {}".format(driver.session_id))
 
     login()
-    driver.get('https://twitter.com/explore')
 
     for j in sys.argv[1:]:
         keywords.append(j)
@@ -123,6 +122,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
         for keyword in keywords:
             # csv_keyword = os.path.join(basedir, '../csv_files/tweets_') + keyword + '.csv'
             try:
+                driver.get('https://twitter.com/search?q=%s' % keyword + '&src=typed_query&f=live')
                 data = structure_keyword()
                 if data == []:
                     pass
@@ -154,6 +154,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
             # print(csv_file)
             # csv_keyword = os.path.join(basedir, '../csv_files/tweets_') + keyword + '.csv'
             try:
+                driver.get('https://twitter.com/search?q=%s' % keyword + 'y&src=typed_query&f=live')
                 data = structure_keyword()
                 if data == []:
                     pass

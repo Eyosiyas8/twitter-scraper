@@ -74,6 +74,7 @@ def structure_tweet():
         # Parse the HTML content of the page using BeautifulSoup
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         tweet_elements = soup.find_all('article', attrs={'data-testid': 'tweet'})
+
         print(len(tweet_elements))
         time.sleep(5)
         for tweet_element in tweet_elements:
@@ -103,7 +104,7 @@ def structure_tweet():
 
         # print(tweet_data)
         scroll_attempt = 0
-        if len(data) >= 0 and len(data) < 10:
+        if len(data) >= 0 and len(data) < 5:
             pass
         else:
             break
@@ -131,24 +132,22 @@ def structure_tweet():
                 break
     print('tweet link: ',tweet_links)
     # try:
-    tweet_data = scrape_replies(username, tweet_links)
-    # except Exception as e:
-    #     print(e)
-    #     error_log(e)
-    for item in data:
-        for record in tweet_data:
-            if item['tweet_id'] == record['conversation_id']:
-                item['replies'].append(record)
-                if item['tweet'][1:50] in record['tweet']:
-                    print("the reply tweet is an extension of the parent tweet")
-                    item['tweet'] = record['tweet']
-                    item['replies'].remove(item['replies'][0])
-                    if item['tweet'][-3] == '1/2':
-                        pass
-                print(type(item['replies']))
+    # tweet_data = scrape_replies(username, tweet_links)
+    # # except Exception as e:
+    # #     print(e)
+    # #     error_log(e)
+    # for item in data:
+    #     for record in tweet_data:
+    #         if item['tweet_id'] == record['conversation_id']:
+    #             item['replies'].append(record)
+    #             if item['tweet'][1:50] in record['tweet']:
+    #                 print("the reply tweet is an extension of the parent tweet")
+    #                 item['tweet'] = record['tweet']
+    #                 item['replies'].remove(item['replies'][0])
+    #                 if item['tweet'][-3] == '1/2':
+    #                     pass
+    #             print(type(item['replies']))
     return data
-
-
 
 acc_name = os.path.join(basedir, '../Authentication/Document.txt')
 try:    
@@ -171,12 +170,12 @@ try:
                 # print(csv_file)
                 # csv_timeline = os.path.join(basedir, '../csv_files/tweets_') + username + ".csv"
                 
-                # try:
-                data = structure_tweet()
-                # except Exception as e:
-                #     print(e)
-                #     error_log(str(e))
-                #     continue        
+                try:
+                    data = structure_tweet()
+                except Exception as e:
+                    print(e)
+                    error_log(str(e))
+                    continue        
                 url = "https://twitter.com/%s" % username
                 driver.get(url)
                 for i in range(3):

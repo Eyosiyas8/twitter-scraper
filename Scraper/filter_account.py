@@ -31,16 +31,16 @@ es=Elasticsearch([{'host':'localhost:9200','port':9200,'scheme':"http"}])
 # Structuring the data generated from the csv files to be inserted to the database
 
 def account_scraper():
-    wait = WebDriverWait(driver, 10)
-    element = wait.until(EC.presence_of_element_located((By.XPATH, "//input[@aria-label='Search query']")))
-    element.send_keys(Keys.CONTROL + "a")
-    element.send_keys(Keys.DELETE)
-    element.send_keys(phrase)
-    element.send_keys(Keys.ENTER)
-    time.sleep(3)
-    wait = WebDriverWait(driver, 20)
-    element = wait.until(EC.presence_of_element_located((By.XPATH, ".//span[contains(text(), 'People')]")))
-    element.click()
+    # wait = WebDriverWait(driver, 10)
+    # element = wait.until(EC.presence_of_element_located((By.XPATH, "//input[@aria-label='Search query']")))
+    # element.send_keys(Keys.CONTROL + "a")
+    # element.send_keys(Keys.DELETE)
+    # element.send_keys(phrase)
+    # element.send_keys(Keys.ENTER)
+    # time.sleep(3)
+    # wait = WebDriverWait(driver, 20)
+    # element = wait.until(EC.presence_of_element_located((By.XPATH, ".//span[contains(text(), 'People')]")))
+    # element.click()
     data = []
     tweet_ids = set()
     last_position = driver.execute_script('return window.pageYOffset;')
@@ -109,7 +109,6 @@ with open(acc_name, "r", encoding='utf-8') as file:
     print("current session is {}".format(driver.session_id))
 
     login()
-    driver.get('https://www.twitter.com/explore')
 
     for j in sys.argv[1:]:
         phrases.append(j)
@@ -125,6 +124,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
 
             # Find all the tweet elements on the page
             try:
+                driver.get('https://twitter.com/search?q=%s' % phrase + '&src=typed_query&f=user')
                 data = account_scraper()
                 print(data)
                 if data == []:
@@ -155,6 +155,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
             csv_file = os.path.join(basedir, '../csv_files/') + phrase + "_basic_info.csv"
 
             try:
+                driver.get('https://twitter.com/search?q=%s' % phrase + '&src=typed_query&f=user')
                 data = account_scraper()
                 print(data)
                 if data == []:

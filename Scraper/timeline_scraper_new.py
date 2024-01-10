@@ -185,13 +185,13 @@ def scrape_user_timeline(main_username, dom):
     image_link = []
     # dom.xpath('//div[@class="css-1dbjc4n r-1awozwy r-1hwvwag r-18kxxzh r-1b7u577"]')[0].click
     try:
-        fullname = dom.xpath('.//span[@class="css-901oao css-16my406 css-1hf3ou5 r-poiln3 r-bcqeeo r-qvutc0"]/span')[0].text
+        fullname = dom.xpath('.//div[@class="css-1rynq56 r-bcqeeo r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-b88u0q r-1awozwy r-6koalj r-1udh08x r-3s2u2q"]/span/span')[0].text
         print(fullname)
         username = dom.xpath('.//span[contains(text(), "@")]')[0].text
         print(username)
         time.sleep(0.2)
         try:
-            tweet_link = dom.xpath('.//div[@class="css-1dbjc4n r-18u37iz r-1q142lx"]/a')[0].attrib['href']
+            tweet_link = dom.xpath('.//div[@class="css-175oi2r r-18u37iz r-1q142lx"]/a')[0].attrib['href']
             tweet_link = 'https://www.twitter.com'+tweet_link
             tweet_id = tweet_link.split("/")[-1]
             print(tweet_id)
@@ -233,9 +233,9 @@ def scrape_user_timeline(main_username, dom):
         hashtag = dom.xpath('.//div[@data-testid="tweetText"]/span/a')
         external_link = dom.xpath('.//div[@data-testid="tweetText"]/a')
         mention = dom.xpath('.//div[@data-testid="tweetText"]/div/span/a')
-        mentions = []
-        hashtags = []
-        external_links = []
+        mentions = ''
+        hashtags = ''
+        external_links = ''
         count_text = 0
         count_hashtag = 0
         count_mentions = 0
@@ -255,29 +255,29 @@ def scrape_user_timeline(main_username, dom):
                     if hashtag:
                         j=count_hashtag
                         text = hashtag[j].text 
-                        hashtags.append(str(text))          
-                        tweet_text += text
+                        hashtags += hashtag        
+                        tweet_text += text + ','
                         count_hashtag+=1
                 for j in range(i):
                     if mention:
                         j=count_mentions
                         text = mention[j].text 
-                        mentions.append(text)             
-                        tweet_text += text
+                        mentions += mention           
+                        tweet_text += text + ','
                         count_mentions+=1
                 for j in range(i):
                     if external_link:
                         j=count_external_link
                         text = external_link[j].text 
-                        external_links.append(text)             
-                        tweet_text += text
+                        external_links += external_link           
+                        tweet_text += text + ','
                         count_external_link+=1
             print(tweet_text)
         except:
-            pass
+            print("Dont know what's happening")
         profile_image = ''
         try:
-            image_links = dom.xpath('.//div[@class="css-1dbjc4n r-1adg3ll r-1udh08x"]//img')
+            image_links = dom.xpath('.//div[@class="css-175oi2r r-1pi2tsx r-13qz1uu r-eqz5dr"]//img')
             for i in range(len(image_links)):  
                 profile_image = image_links[0].attrib['src'] 
                 image = image_links[i].attrib['src'] 
@@ -289,22 +289,22 @@ def scrape_user_timeline(main_username, dom):
             print(None)
             pass
         try:
-            reply_count = dom.xpath('.//span[@class="css-901oao css-16my406 r-poiln3 r-n6v787 r-1cwl3u0 r-1k6nrdp r-1e081e0 r-qvutc0"]/span')[0].text
+            reply_count = dom.xpath('.//span[@data-testid="app-text-transition-container"]/span/span')[0].text
             print(reply_count)
         except:
             reply_count = ''
         try:
-            retweet_count = dom.xpath('.//span[@class="css-901oao css-16my406 r-poiln3 r-n6v787 r-1cwl3u0 r-1k6nrdp r-1e081e0 r-qvutc0"]/span')[1].text
+            retweet_count = dom.xpath('.//span[@data-testid="app-text-transition-container"]/span/span')[1].text
             print(retweet_count)
         except:
             retweet_count = ''
         try:
-            likes_count = dom.xpath('.//span[@class="css-901oao css-16my406 r-poiln3 r-n6v787 r-1cwl3u0 r-1k6nrdp r-1e081e0 r-qvutc0"]/span')[2].text
+            likes_count = dom.xpath('.//span[@data-testid="app-text-transition-container"]/span/span')[2].text
             print(likes_count)
         except:
             likes_count = ''
         try:
-            views_count = dom.xpath('.//span[@class="css-901oao css-16my406 r-poiln3 r-n6v787 r-1cwl3u0 r-1k6nrdp r-1e081e0 r-qvutc0"]/span')[3].text
+            views_count = dom.xpath('.//span[@data-testid="app-text-transition-container"]/span/span')[3].text
             print(views_count)
         except:
             views_count = ''
