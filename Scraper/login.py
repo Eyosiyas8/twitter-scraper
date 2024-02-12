@@ -93,4 +93,4 @@ def login():
 # login()
 # time.sleep(2)
 # cookies = driver.get_cookies()
-# pickle.dump(cookies, open('cookies.pkl', "wb"))
+# pickle.dump(cookies, open('cookies1.pkl', "wb"))

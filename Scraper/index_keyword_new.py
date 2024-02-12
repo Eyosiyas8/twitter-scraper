@@ -74,12 +74,12 @@ def structure_keyword():
                     tweet_ids.add(tweet_id)
                     data.append({
             'name': tweet[0],
-            'username': tweet[1], 'tweet_id': tweet[2], 'tweet_link': tweet[3], 'conversation_id': tweet[4], 'date':tweet[5], 'tweet': tweet[6], 'image_link': tweet[7], 'hashtags': tweet[8], 'mentions': tweet[9], 'link': tweet[10],
-            'replies_count': tweet[11],
-            'retweets_count': tweet[12], 'likes_count': tweet[13], 'views_count': tweet[14],
+            'username': tweet[1], 'tweet_id': tweet[2], 'tweet_link': tweet[3], 'conversation_id': tweet[4], 'date':tweet[5], 'tweet': tweet[6], 'repost':tweet[7], 'image_link': tweet[8], 'hashtags': tweet[9], 'mentions': tweet[10], 'link': tweet[11],
+            'replies_count': tweet[12],
+            'retweets_count': tweet[13], 'likes_count': tweet[14], 'views_count': tweet[15],
             'replies': [], 'reporting': {'is_reported': False, 'reporting_date': None, 'reported_by': None}})
         scroll_attempt = 0
-        if len(data) >= 0 and len(data) < 20:
+        if len(data) >= 0 and len(data) < 5:
             pass
         else:
             break
@@ -154,7 +154,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
             # print(csv_file)
             # csv_keyword = os.path.join(basedir, '../csv_files/tweets_') + keyword + '.csv'
             try:
-                driver.get('https://twitter.com/search?q=%s' % keyword + 'y&src=typed_query&f=live')
+                driver.get('https://twitter.com/search?q=%s' % keyword + '&src=typed_query&f=live')
                 data = structure_keyword()
                 if data == []:
                     pass
