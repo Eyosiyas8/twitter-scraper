@@ -1,64 +1,56 @@
+import os
+import pickle
+import urllib.error
+import random
+import time
+import chromedriver_autoinstaller
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-import os
-import pickle
-import urllib.request
-import urllib.error
 from log import error_log
-import random
 
-
-from selenium.webdriver.common.keys import Keys
-
-import time
-#from bs4 import BeautifulSoup
-import chromedriver_autoinstaller
-from selenium.common.exceptions import NoSuchElementException
-# Assigning a link to a webdriver
-for i in range(3):
+def login(driver, cookies):
+    for cookie in cookies:
+        try:
+            driver.add_cookie(cookie)
+        except Exception as e:
+            print(e)
+    driver.get("https://www.twitter.com/")  # Login URL
+    time.sleep(2)
     try:
-        chromedriver_autoinstaller.install()
-        options = Options()
-        # options.add_argument('--headless')
-        # chro_path = os.environ.get('CHROME_PATH')
-        driver = webdriver.Chrome(options=options)
+        wait = WebDriverWait(driver, 3)
+        element = wait.until(EC.presence_of_element_located((By.XPATH, './/span[contains(text(), "You have reached the limit for seeing posts today. Subscribe to see more posts every day.")]')))
+        return True  # Daily limit reached
+    except:
+        return False  # Login successful
 
-        driver.get("https://www.twitter.com/login")
-        print(driver.current_url)
+chromedriver_autoinstaller.install()
+options = Options()
+driver = webdriver.Chrome(options=options)
 
-        print("Opening twitter account...")
+my_list = ['cookies.pkl', 'cookies1.pkl']
+num_selections = 1
+cookie_selected = None
 
-        basedir = os.path.dirname(os.path.abspath(__file__))
-        # account_info = os.path.join(basedir, '../Authentication/Account.txt')
-        #log in into an account
+while not cookie_selected:
+    new_list = random.sample(my_list, num_selections)
+    joint_cookies = ', '.join(new_list)
+    new_cookie = os.path.join(os.path.dirname(os.path.abspath(__file__)), joint_cookies)
+    cookies = pickle.load(open(new_cookie, "rb"))
+    driver.get("https://www.twitter.com/login")
+    if login(driver, cookies):
+        error_log('The session has reached the daily limit')
+        my_list.remove(os.path.basename(new_cookie))  # Remove the selected cookie from the list
+        if not my_list:
+            break  # No more cookies to try
+    else:
+        cookie_selected = new_cookie  # Successful login, exit the loop
 
+if cookie_selected:
+    print("Successfully logged in with cookie:", cookie_selected)
+else:
+    print("Failed to log in with all cookies")
 
-        my_list = ['cookies.pkl', 'cookies1.pkl']
-        num_selections = 1
-
-        # Randomly select 'num_selections' items from the list
-        new_list = random.sample(my_list, num_selections)
-
-        # Extract the strings from the list (without square brackets)
-        joint_cookies = ', '.join(new_list)
-        
-        time.sleep(2)
-        new_cookie = os.path.join(basedir, joint_cookies)
-        cookies = pickle.load(open(new_cookie, "rb"))
-        def login():
-            for cookie in cookies:
-                try:
-                    driver.add_cookie(cookie)
-                except Exception as e:
-                    print(e)
-            # pickle.dump(cookies, open('cookies.pkl', "wb"))
-            driver.get("https://www.twitter.com/")
-            time.sleep(2)
-        break
-    except urllib.error.URLError as e:
-        time.sleep(20)
-        print("Connection Error: ", {e})
-        error_log(e)
+# login(driver, cookies)  # Close the WebDriver once done

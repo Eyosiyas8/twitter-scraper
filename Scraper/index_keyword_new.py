@@ -114,7 +114,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
     keywords = []
     print("current session is {}".format(driver.session_id))
 
-    login()
+    # login()
 
     for j in sys.argv[1:]:
         keywords.append(j)
