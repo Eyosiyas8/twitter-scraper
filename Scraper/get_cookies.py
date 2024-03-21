@@ -28,6 +28,7 @@ def login(driver, cookies):
 
 chromedriver_autoinstaller.install()
 options = Options()
+options.add_argument('--headless')
 driver = webdriver.Chrome(options=options)
 
 my_list = ['cookies.pkl', 'cookies1.pkl']
