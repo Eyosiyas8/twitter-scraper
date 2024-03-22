@@ -70,19 +70,7 @@ while True:
     else:
         break
 
-# Save the video details and comments to a file
-with open(OUTPUT_FILE, "w", encoding="utf-8") as file:
-    file.write(f"Video Title: {video_title}\n")
-    file.write(f"Video URL: {VIDEO_URL}\n")
-    file.write(f"Likes: {video_likes}\n")
-    file.write(f"Shares: {video_shares}\n")
-    file.write(f"Comments: {video_comments}\n")
-    file.write(f"Subscribers: {channel_subscribers}\n")
-    file.write("\nComments:\n")
-    for comment in comments:
 
-
-        file.write(f"- {comment}\n")
 
     # Appending all the comments to one list
 all_coments = []
@@ -106,4 +94,4 @@ youtube_data = {
 # Save the record to the collection
 collection.insert_one(youtube_data)
 
-print(f"Video details and comments scraped from '{video_title}' saved to '{os.path.abspath(OUTPUT_FILE)}'.")
+print(f"Video details and comments scraped from '{video_title}' saved in the database youtube-data.")
