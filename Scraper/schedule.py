@@ -14,7 +14,7 @@ def scrape_scheduler():
     This function defines the file to run in the interval specified below.
     '''
     # os.system(os.path.join(basedir, 'index.py'))
-    file_path = os.path.join(basedir, 'youtubecommentscrapperWithInteraction.py')
+    file_path = os.path.join(basedir, '../YouTube/youtubecommentscrapperWithInteraction.py')
     file_path1 = os.path.join(basedir, 'index_new.py')
     os.system('python3 ' + file_path)
     os.system('python3 ' + file_path1)
