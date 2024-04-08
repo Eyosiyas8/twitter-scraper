@@ -103,7 +103,7 @@ def keyword_scraper(keyword, dom):
         # Extracting profile image links
         image_links = dom.xpath('.//div[@class="css-175oi2r r-1pi2tsx r-13qz1uu r-eqz5dr"]//img/@src')
         for i, link in enumerate(image_links):
-            if i == 0 or 'profile_images' in link:
+            if 'profile_images' in link:
                 continue
             image_link.append(link)
 
