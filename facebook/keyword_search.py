@@ -23,6 +23,7 @@ collection = db['keyword']
 # driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()),options=firefox_options)
 chromedriver_autoinstaller.install()
 chrome_options = Options()
+chrome_options.add_argument('--headless')
 chrome_options.add_argument("--disable-notifications")  # This line disables notifications
 driver = webdriver.Chrome(options=chrome_options)
 # Login to Facebook
