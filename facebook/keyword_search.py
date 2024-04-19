@@ -23,7 +23,7 @@ collection = db['keyword']
 # driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()),options=firefox_options)
 chromedriver_autoinstaller.install()
 chrome_options = Options()
-chrome_options.add_argument('--headless')
+chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-notifications")  # This line disables notifications
 driver = webdriver.Chrome(options=chrome_options)
 # Login to Facebook
@@ -31,10 +31,10 @@ LOGIN_URL = 'https://m.facebook.com/'
 driver.get(LOGIN_URL)
 
 email_element = driver.find_element(By.NAME, 'email')
-email_element.send_keys('ethioact844@gmail.com')
+email_element.send_keys('kebede9966@gmail.com')
 
 password_element = driver.find_element(By.NAME, 'pass')
-password_element.send_keys("Maru@#0184")
+password_element.send_keys("RZa@#156400")
 
 login_button = driver.find_element(By.NAME, 'login')
 login_button.click()
