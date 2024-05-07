@@ -59,16 +59,19 @@ while True:
 
     for comment_thread in comment_threads["items"]:
         # Extract the top-level comment details
-        top_level_comment = comment_thread["snippet"]["topLevelComment"]["snippet"]["textDisplay"]
-        comments.append(top_level_comment)
+        top_level_comment = comment_thread["snippet"]["topLevelComment"]["snippet"]
+        author_display_name = top_level_comment["authorDisplayName"]
+        comment_text = top_level_comment["textDisplay"]
+        comments.append((author_display_name, comment_text))
 
         # Check if there are any replies to the top-level comment
         if "replies" in comment_thread:
             replies = comment_thread["replies"]["comments"]
             for reply in replies:
                 # Extract the reply details
+                reply_author_display_name = reply["snippet"]["authorDisplayName"]
                 reply_text = reply["snippet"]["textDisplay"]
-                comments.append(reply_text)
+                comments.append((reply_author_display_name, reply_text))
 
     if "nextPageToken" in comment_threads:
         next_page_token = comment_threads["nextPageToken"]
@@ -80,7 +83,8 @@ while True:
     # Appending all the comments to one list
 all_coments = []
 for comment in comments:
-    all_coments.append(comment)
+    author_display_name, comment = comment
+    all_coments.append({"username": author_display_name, "comment" :comment})
 
 
 # Create a dictionary to store all the data
