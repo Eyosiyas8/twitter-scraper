@@ -21,10 +21,14 @@ basedir = os.path.dirname(os.path.abspath(__file__))
 # Set up the YouTube Data API client
 youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=API_KEY)
 link = os.path.join(basedir, 'url.txt')
-# Input the YouTube video URL from the user
-line = ''.join(sys.argv[1:])
+# Input the YouTube video URL from the user 
+try:
+    osint_username = ''.join(sys.argv[2])
+except:
+    osint_username = 'Anonymous'
 
-VIDEO_URL = line
+
+VIDEO_URL = ''.join(sys.argv[1])
 
 # Extract the video ID from the YouTube video URL
 video_id = VIDEO_URL.split("v=")[1]
@@ -97,6 +101,7 @@ youtube_data = {
     "Comments Count": video_comments,
     "Likes": video_likes,
     "Shares": video_shares,
+    "osint_username": osint_username,
     # "Subscriber Count": subscriber_count,
     "Comments": all_coments
     

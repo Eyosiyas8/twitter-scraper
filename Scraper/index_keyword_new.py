@@ -115,28 +115,34 @@ with open(acc_name, "r", encoding='utf-8') as file:
     print("current session is {}".format(driver.session_id))
 
     # login()
+    keyword = ''.join(sys.argv[1])
+    try:
+        osint_username = ''.join(sys.argv[2])
+    except:
+        osint_username = 'Anonymous'
 
-    for j in sys.argv[1:]:
-        keywords.append(j)
-    if len(keywords) >= 1:
-        for keyword in keywords:
+    # for j in sys.argv[1:]:
+    #     keywords.append(j)
+    # if len(keywords) >= 1:
+    #     for keyword in keywords:
             # csv_keyword = os.path.join(basedir, '../csv_files/tweets_') + keyword + '.csv'
-            try:
-                driver.get('https://twitter.com/search?q=%s' % keyword + '&src=typed_query&f=live')
-                data = structure_keyword()
-                if data == []:
-                    pass
-                else:
-                    csv_row1 = []
-                    csv_row1.append({'Date_of_Scraping': datetime.today(), 'Keyword': keyword, 'tweets': data})
-                    print(data)
-                    print('this is csv row one ', csv_row1)
-                    collection.insert_many(csv_row1)
+    if keyword:
+        try:
+            driver.get('https://twitter.com/search?q=%s' % keyword + '&src=typed_query&f=live')
+            data = structure_keyword()
+            if data == []:
+                pass
+            else:
+                csv_row1 = []
+                csv_row1.append({'Date_of_Scraping': datetime.today(), 'Keyword': keyword, 'osint_username': osint_username, 'tweets': data})
+                print(data)
+                print('this is csv row one ', csv_row1)
+                collection.insert_many(csv_row1)
 
-            except Exception as e:
-                message = str(e)
-                error_log(message)
-                continue
+        except Exception as e:
+            message = str(e)
+            error_log(message)
+
         
             sleep(1)
 
@@ -160,7 +166,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
                     pass
                 else:
                     csv_row1 = []
-                    csv_row1.append({'Date_of_Scraping': datetime.today(), 'Keyword': keyword, 'tweets': data})
+                    csv_row1.append({'Date_of_Scraping': datetime.today(), 'Keyword': keyword, 'osint_username': osint_username, 'tweets': data})
                     print(data)
                     print('this is csv row one ', csv_row1)
                     collection.insert_many(csv_row1)

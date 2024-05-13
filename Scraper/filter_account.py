@@ -109,39 +109,42 @@ with open(acc_name, "r", encoding='utf-8') as file:
     print("current session is {}".format(driver.session_id))
 
     # login()
+    try:
+        osint_username = ''.join(sys.argv[2])
+    except:
+        osint_username = 'Anonymous'
+    phrase = ''.join(sys.argv[1])
+    # for j in sys.argv[1:]:
+    #     phrases.append(j)
+    if phrase:
+        # for phrase in phrases:
+        csv_file = os.path.join(basedir, '../csv_files/') + phrase + "_basic_info.csv"
+        # Define the URL for the user's timeline
+        # url = "https://twitter.com/"
+        # Send an HTTP GET request to the URL
+        # response = requests.get(url)
 
-    for j in sys.argv[1:]:
-        phrases.append(j)
-    if len(phrases) >= 1:
-        for phrase in phrases:
-            csv_file = os.path.join(basedir, '../csv_files/') + phrase + "_basic_info.csv"
-            # Define the URL for the user's timeline
-            # url = "https://twitter.com/"
-            # Send an HTTP GET request to the URL
-            # response = requests.get(url)
+        # Check if the response status code is 200 (OK)
 
-            # Check if the response status code is 200 (OK)
-
-            # Find all the tweet elements on the page
-            try:
-                driver.get('https://twitter.com/search?q=%s' % phrase + '&src=typed_query&f=user')
-                data = account_scraper()
-                print(data)
-                if data == []:
-                    error_log(phrase+' search phrase isn\'t correct')
-                    pass
-                else:
-                    # print('this is account info ', account_info)
-                    csv_row1 = []
-                    csv_row1.append({'Date_of_Scraping': datetime.today(), 'Search Phrase': phrase, 'Account Info': data})
-                    collection.insert_many(csv_row1)
-                    print(csv_row1)
+        # Find all the tweet elements on the page
+        try:
+            driver.get('https://twitter.com/search?q=%s' % phrase + '&src=typed_query&f=user')
+            data = account_scraper()
+            print(data)
+            if data == []:
+                error_log(phrase+' search phrase isn\'t correct')
+                pass
+            else:
+                # print('this is account info ', account_info)
+                csv_row1 = []
+                csv_row1.append({'Date_of_Scraping': datetime.today(), 'Search Phrase': phrase, 'osint_username': osint_username, 'Account Info': data})
+                collection.insert_many(csv_row1)
+                print(csv_row1)
 
 
-            except Exception as e:
-                message = str(e)
-                error_log(message)
-                continue
+        except Exception as e:
+            message = str(e)
+            error_log(message)
 
            
     else:
@@ -164,7 +167,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
                 else:
                     # print('this is account info ', account_info)
                     csv_row1 = []
-                    csv_row1.append({'Date_of_Scraping': datetime.today(), 'Search Phrase': phrase, 'Account Info': data})
+                    csv_row1.append({'Date_of_Scraping': datetime.today(), 'Search Phrase': phrase, 'osint_username': osint_username, 'Account Info': data})
                     collection.insert_many(csv_row1)
                     print(csv_row1)
 

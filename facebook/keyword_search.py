@@ -34,14 +34,18 @@ email_element = driver.find_element(By.NAME, 'email')
 email_element.send_keys('tigistkonjo875@gmail.com')
 
 password_element = driver.find_element(By.NAME, 'pass')
-password_element.send_keys("Endu@#0184")
+password_element.send_keys("Endu@#01841")
 
 login_button = driver.find_element(By.NAME, 'login')
 login_button.click()
 time.sleep(7)
 
 # Search for keyword
-keyword = keyword =''.join(sys.argv[1:])
+keyword = keyword =''.join(sys.argv[1])
+try:
+    osint_username = ''.join(sys.argv[2])
+except:
+    osint_username = 'Anonymous'
 link = "https://m.facebook.com/search/posts/?q=" + keyword
 driver.get(link)
 time.sleep(3)
@@ -90,7 +94,7 @@ for result in results:
     else:
         # Handle the case where the URL element is not found
         post_data['p_url'] = "URL not found"
-
+    post_data['osint_username'] = osint_username
     result_time = result.find("div", class_="x78zum5 xdt5ytf xz62fqu x16ldp7u")
     if result_time is None:
         print("No time data found")

@@ -2,6 +2,7 @@ import sys
 import time
 import re
 import os
+import datetime
 from selenium.webdriver.chrome.options import Options
 import chromedriver_autoinstaller
 from selenium.webdriver.support import expected_conditions as EC
@@ -18,7 +19,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client['facebook-data']
-collection = db['facebookpage']
+collection = db['groupscollections']
 # Initialize the Firefox driver
 # driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()),options=firefox_options)
 chromedriver_autoinstaller.install()
@@ -34,7 +35,7 @@ email_element = driver.find_element(By.NAME, 'email')
 email_element.send_keys('tigistkonjo875@gmail.com')
 
 password_element = driver.find_element(By.NAME, 'pass')
-password_element.send_keys("Endu@#0184")
+password_element.send_keys("Endu@#01841")
 
 login_button = driver.find_element(By.NAME, 'login')
 login_button.click()
@@ -43,7 +44,8 @@ file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'list_post.
 # file_path = 'list_post.txt'  # Replace with the actual path to your text file
 with open(file_path, 'r') as file:
     for line in file:
-        url = "https://m.facebook.com/"+line
+        osint_username = line.split(" ")[1]
+        url = "https://m.facebook.com/"+line.split(" ")[0]
         driver.get(url)
         time.sleep(3)
         scroll_count = 0
@@ -131,7 +133,9 @@ with open(file_path, 'r') as file:
                     if i == 0:
                         post_data['comment_number'] = comment                              
                     elif i == 1:
-                        post_data['share_number'] = comment                
+                        post_data['share_number'] = comment
+            post_data['date_of_scraping'] =  datetime.datetime.today()
+            post_data['osint_username'] = osint_username      
             # Insert post data into MongoDB
             if 'post_channel' in post_data and 'title' in post_data:
                 post_id = collection.insert_one(post_data).inserted_id
