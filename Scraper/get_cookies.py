@@ -17,7 +17,7 @@ def login(driver, cookies):
             driver.add_cookie(cookie)
         except Exception as e:
             print(e)
-    driver.get("https://www.twitter.com/")  # Login URL
+    driver.get("https://www.x.com/")  # Login URL
     time.sleep(2)
     try:
         wait = WebDriverWait(driver, 3)
@@ -40,7 +40,7 @@ while not cookie_selected:
     joint_cookies = ', '.join(new_list)
     new_cookie = os.path.join(os.path.dirname(os.path.abspath(__file__)), joint_cookies)
     cookies = pickle.load(open(new_cookie, "rb"))
-    driver.get("https://www.twitter.com/login")
+    driver.get("https://www.x.com/login")
     if login(driver, cookies):
         error_log('The session has reached the daily limit')
         my_list.remove(os.path.basename(new_cookie))  # Remove the selected cookie from the list

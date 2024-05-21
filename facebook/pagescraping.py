@@ -32,10 +32,10 @@ LOGIN_URL = 'https://m.facebook.com/'
 driver.get(LOGIN_URL)
 
 email_element = driver.find_element(By.NAME, 'email')
-email_element.send_keys('tigistkonjo875@gmail.com')
+email_element.send_keys('getahungeta757@gmail.com')
 
 password_element = driver.find_element(By.NAME, 'pass')
-password_element.send_keys("Endu@#01841")
+password_element.send_keys("Geta@#5077")
 
 login_button = driver.find_element(By.NAME, 'login')
 login_button.click()
@@ -44,7 +44,10 @@ file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'list_post.
 # file_path = 'list_post.txt'  # Replace with the actual path to your text file
 with open(file_path, 'r') as file:
     for line in file:
-        osint_username = line.split(" ")[1]
+        try:
+            osint_username = line.split(" ")[1]
+        except:
+            osint_username = "Anonymous"
         url = "https://m.facebook.com/"+line.split(" ")[0]
         driver.get(url)
         time.sleep(3)

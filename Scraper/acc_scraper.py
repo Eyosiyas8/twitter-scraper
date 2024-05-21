@@ -26,9 +26,9 @@ from bs4 import BeautifulSoup
 def acc_info(dom):
     image_link = []
     # dom.xpath('//div[@class="css-1dbjc4n r-1awozwy r-1hwvwag r-18kxxzh r-1b7u577"]')[0].click
-    time.sleep(1)
+    time.sleep(0.21)
     try:
-        fullname = dom.xpath('.//div[@class="css-1rynq56 r-bcqeeo r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-b88u0q r-1awozwy r-6koalj r-1udh08x r-3s2u2q"]/span/span')[0].text
+        fullname = dom.xpath('.//div[@class="css-146c3p1 r-bcqeeo r-1ttztb7 r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-b88u0q r-1awozwy r-6koalj r-1udh08x r-3s2u2q"]/span/span')[0].text
         print(fullname)
     except:
         fullname = ''
@@ -39,7 +39,7 @@ def acc_info(dom):
         username = ''
     time.sleep(0.2)
     try:
-        description = dom.xpath('.//div[@class="css-1rynq56 r-bcqeeo r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-16dba41 r-1h8ys4a r-1jeg54m"]/span')[0].text
+        description = dom.xpath('.//div[@class="css-146c3p1 r-bcqeeo r-1ttztb7 r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-16dba41 r-1h8ys4a r-1jeg54m"]/span')[0].text
         if description == None:
             description = ''
         print(description)
@@ -47,7 +47,7 @@ def acc_info(dom):
         description = ''
     profile_image = ''
     try:
-        image_links = dom.xpath('.//div[@class="css-175oi2r r-1mlwlqe r-1udh08x r-417010"]/img')
+        image_links = dom.xpath('.//div[@class="css-175oi2r r-1mlwlqe r-1udh08x r-417010 r-1p0dtai r-1d2f490 r-u8s1d r-zchlnj r-ipm5af"]/img')
         for i in range(len(image_links)):  
             profile_image = image_links[0].attrib['src'] 
             image = image_links[i].attrib['src'] 

@@ -31,10 +31,10 @@ LOGIN_URL = 'https://m.facebook.com/'
 driver.get(LOGIN_URL)
 
 email_element = driver.find_element(By.NAME, 'email')
-email_element.send_keys('tigistkonjo875@gmail.com')
+email_element.send_keys('getahungeta757@gmail.com')
 
 password_element = driver.find_element(By.NAME, 'pass')
-password_element.send_keys("Endu@#01841")
+password_element.send_keys("Geta@#5077")
 
 login_button = driver.find_element(By.NAME, 'login')
 login_button.click()

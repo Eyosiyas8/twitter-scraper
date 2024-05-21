@@ -190,10 +190,16 @@ def scrape_user_timeline(main_username, dom):
     external_links = []
 
     try:
-        fullname = dom.xpath('.//div[@class="css-1rynq56 r-bcqeeo r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-b88u0q r-1awozwy r-6koalj r-1udh08x r-3s2u2q"]/span/span')[0].text
-        print(fullname)
-        username = dom.xpath('.//span[contains(text(), "@")]')[0].text
-        print(username)
+        try:
+            fullname = dom.xpath('.//div[@class="css-146c3p1 r-bcqeeo r-1ttztb7 r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-b88u0q r-1awozwy r-6koalj r-1udh08x r-3s2u2q"]/span/span')[0].text
+            print(fullname)
+        except:
+            fullname = ''
+        try:
+            username = dom.xpath('.//span[contains(text(), "@")]')[0].text
+            print(username)
+        except:
+            username = ''
         time.sleep(0.2)
         try:
             repost = dom.xpath('.//span[contains(text(), " reposted")]')[0].text

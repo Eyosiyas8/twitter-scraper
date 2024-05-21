@@ -156,92 +156,52 @@ try:
         lines = file.readlines()
         lines = [line.rstrip() for line in lines]
         usernames = []
-        flag = False
-
-        for j in sys.argv[1:]:
-            usernames.append(j)
-        if len(usernames) >= 1:
-            for username in usernames:
-                url = "https://twitter.com/%s" % username
-                print("current session is {}".format(driver.session_id))
-                driver.get(url)
-                print(url)
-                # csv_file = os.path.join(basedir, '../csv_files/') + username + ".csv"
-                profile_info = []
-                # print(csv_file)
-                # csv_timeline = os.path.join(basedir, '../csv_files/tweets_') + username + ".csv"
-                
-                try:
-                    data = structure_tweet()
-                except Exception as e:
-                    print(e)
-                    error_log(str(e))
-                    continue        
-                url = "https://twitter.com/%s" % username
-                driver.get(url)
-                for i in range(3):
-                    try:
-                        profile = profile_scraper(username)
-                        break
-                    except urllib.error.URLError as e:
-                        time.sleep(10)
-                        print("Connection Error: ", {e})
-                        error_log(e)
-                if profile[0] !=None and profile[1] != None:
-                    append_data(profile, data)
-                else:
-                    error_log(username+' Account dosn\'t exist')
-                    continue
-
-                sleep(1)
-                
+        flag = False    
+        for i in tqdm.tqdm(range(len(lines))):
+            print(type(lines))
+            print(lines)
+            print(type(i))
+            sleep(0.1)
+            print(lines[i])
+            username = lines[i].split(" ")[0]
+            try:
+                osint_username = lines[i].split(" ")[1]
+            except:
+                osint_username = "Anonymous"
+            url = "https://twitter.com/%s" % username
+            print("current session is {}".format(driver.session_id))
+            driver.get(url)
+            print(url)
+            # csv_file = os.path.join(basedir, '../csv_files/') + username + ".csv"
+            profile_info = []
+            # print(csv_file)
+            # csv_timeline = os.path.join(basedir, '../csv_files/tweets_') + username + ".csv"
             
-        else:
-            for i in tqdm.tqdm(range(len(lines))):
-                print(type(lines))
-                print(lines)
-                print(type(i))
-                sleep(0.1)
-                print(lines[i])
-                username = lines[i].split(" ")[0]
-                try:
-                    osint_username = lines[i].split(" ")[1]
-                except:
-                    osint_username = "Anonymous"
-                url = "https://twitter.com/%s" % username
-                print("current session is {}".format(driver.session_id))
-                driver.get(url)
-                print(url)
-                # csv_file = os.path.join(basedir, '../csv_files/') + username + ".csv"
-                profile_info = []
-                # print(csv_file)
-                # csv_timeline = os.path.join(basedir, '../csv_files/tweets_') + username + ".csv"
-                
-                try:
-                    data = structure_tweet()
-                except Exception as e:
-                    print(e)
-                    error_log(str(e))
-                    continue
+            try:
+                data = structure_tweet()
+            except Exception as e:
+                print(e)
+                error_log(str(e))
+                continue
 
-                # try:
-                # scrape_replies(username, data)
-                url = "https://twitter.com/%s" % username
-                driver.get(url)
-                for i in range(3):
-                    try:
-                        profile = profile_scraper(username)
-                        break
-                    except urllib.error.URLError as e:
-                        time.sleep(10)
-                        print("Connection Error: ", {e})
-                        error_log(e)
+            # try:
+            # scrape_replies(username, data)
+            url = "https://twitter.com/%s" % username
+            driver.get(url)
+            for i in range(3):
+                try:
+                    profile = profile_scraper(username)
+                    break
+                except urllib.error.URLError as e:
+                    time.sleep(10)
+                    print("Connection Error: ", {e})
+                    error_log(e)
 
-                if profile[1] !=None and profile[2] != None:
-                    append_data(profile, data)
-                else:
-                    error_log(username+' Account dosn\'t exist')
-                    continue
+            if profile[1] !=None and profile[2] != None:
+                append_data(profile, data)
+            else:
+                error_log(username+' Account dosn\'t exist')
+                continue
 except urllib.error.URLError as e:
     for i in range(3):
         time.sleep(5)
