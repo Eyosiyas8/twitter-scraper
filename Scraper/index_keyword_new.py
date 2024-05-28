@@ -50,13 +50,23 @@ def structure_keyword():
     y=1000
     while scrolling:
         # Parse the HTML content of the page using BeautifulSoup
-        time.sleep(3)
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
-        tweet_elements = soup.find_all('article', attrs={'data-testid': 'tweet'})
-        time.sleep(3)
-        print(len(tweet_elements))
-        if len(tweet_elements) == 0:
-            error_log(keyword+' Keyword isn\'t correct')
+        found = False
+        for i in range(3):
+            time.sleep(3)
+            soup = BeautifulSoup(driver.page_source, 'html.parser')
+            tweet_elements = soup.find_all('article', attrs={'data-testid': 'tweet'})
+            time.sleep(3)
+            print(len(tweet_elements))
+            if len(tweet_elements) == 0:
+                error_log(keyword+' Keyword isn\'t correct or failed to load the page. Retrying . . .')
+                driver.refresh()
+                time.sleep(2)
+                continue
+            else:
+                found = True
+                break
+        if not found:
+            error_log("After repeated attempts, results for this keyword can't be retrive. It's either a connection error or keyword "+keyword+" isn\'t found!")
             break
         for tweet_element in tweet_elements:
             dom = etree.HTML(str(tweet_element))
@@ -127,24 +137,24 @@ with open(acc_name, "r", encoding='utf-8') as file:
     #     for keyword in keywords:
             # csv_keyword = os.path.join(basedir, '../csv_files/tweets_') + keyword + '.csv'
     if keyword:
-        try:
-            driver.get('https://twitter.com/search?q=%s' % keyword + '&src=typed_query&f=live')
-            data = structure_keyword()
-            if data == []:
-                pass
-            else:
-                csv_row1 = []
-                csv_row1.append({'Date_of_Scraping': datetime.today(), 'Keyword': keyword, 'osint_username': osint_username, 'tweets': data})
-                print(data)
-                print('this is csv row one ', csv_row1)
-                collection.insert_many(csv_row1)
+        # try:
+        driver.get('https://twitter.com/search?q=%s' % keyword + '&src=typed_query&f=live')
+        data = structure_keyword()
+        if data == []:
+            pass
+        else:
+            csv_row1 = []
+            csv_row1.append({'Date_of_Scraping': datetime.today(), 'Keyword': keyword, 'osint_username': osint_username, 'tweets': data})
+            print(data)
+            print('this is csv row one ', csv_row1)
+            collection.insert_many(csv_row1)
 
-        except Exception as e:
-            message = str(e)
-            error_log(message)
+        # except Exception as e:
+        #     message = str(e)
+        #     error_log(message)
 
         
-            sleep(1)
+        #     sleep(1)
 
     else:
         for i in tqdm.tqdm(range(len(lines))):
