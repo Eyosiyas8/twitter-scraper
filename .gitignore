@@ -10,6 +10,7 @@ __pycache__/
 src/
 csv_files/
 facebook/list_post.txt
+facebook/list_user.txt
 Scraper/new.py
 Scraper/dictionary.txt
 test.txt
