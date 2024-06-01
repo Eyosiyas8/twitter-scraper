@@ -43,9 +43,9 @@ time.sleep(7)
 # Search for keyword
 keyword = keyword =''.join(sys.argv[1])
 try:
-    osint_username = ''.join(sys.argv[2])
+    osint_user_id = ''.join(sys.argv[2])
 except:
-    osint_username = 'Anonymous'
+    osint_user_id = 'Anonymous'
 link = "https://m.facebook.com/search/posts/?q=" + keyword
 driver.get(link)
 time.sleep(3)
@@ -94,7 +94,7 @@ for result in results:
     else:
         # Handle the case where the URL element is not found
         post_data['p_url'] = "URL not found"
-    post_data['osint_username'] = osint_username
+    post_data['osint_user_id'] = osint_user_id
     result_time = result.find("div", class_="x78zum5 xdt5ytf xz62fqu x16ldp7u")
     if result_time is None:
         print("No time data found")

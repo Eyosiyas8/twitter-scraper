@@ -127,9 +127,9 @@ with open(acc_name, "r", encoding='utf-8') as file:
     # login()
     keyword = ''.join(sys.argv[1])
     try:
-        osint_username = ''.join(sys.argv[2])
+        osint_user_id = ''.join(sys.argv[2])
     except:
-        osint_username = 'Anonymous'
+        osint_user_id = 'Anonymous'
 
     # for j in sys.argv[1:]:
     #     keywords.append(j)
@@ -144,7 +144,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
             pass
         else:
             csv_row1 = []
-            csv_row1.append({'Date_of_Scraping': datetime.today(), 'Keyword': keyword, 'osint_username': osint_username, 'tweets': data})
+            csv_row1.append({'Date_of_Scraping': datetime.today(), 'Keyword': keyword, 'osint_user_id': osint_user_id, 'tweets': data})
             print(data)
             print('this is csv row one ', csv_row1)
             collection.insert_many(csv_row1)
@@ -176,7 +176,7 @@ with open(acc_name, "r", encoding='utf-8') as file:
                     pass
                 else:
                     csv_row1 = []
-                    csv_row1.append({'Date_of_Scraping': datetime.today(), 'Keyword': keyword, 'osint_username': osint_username, 'tweets': data})
+                    csv_row1.append({'Date_of_Scraping': datetime.today(), 'Keyword': keyword, 'osint_user_id': osint_user_id, 'tweets': data})
                     print(data)
                     print('this is csv row one ', csv_row1)
                     collection.insert_many(csv_row1)

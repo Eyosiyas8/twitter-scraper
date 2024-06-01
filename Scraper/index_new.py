@@ -48,7 +48,7 @@ def append_data(profile, data):
     'Number of Followers': profile[5],
     'Profile_Picture': profile[6],
     'Joined_Date': profile[7],
-    'osint_username': osint_username,
+    'osint_user_id': osint_user_id,
     'tweets': data})
     print(data)
     print('this is csv row one ', csv_row1)
@@ -165,9 +165,9 @@ try:
             print(lines[i])
             username = lines[i].split(" ")[0]
             try:
-                osint_username = lines[i].split(" ")[1]
+                osint_user_id = lines[i].split(" ")[1]
             except:
-                osint_username = "Anonymous"
+                osint_user_id = "Anonymous"
             url = "https://twitter.com/%s" % username
             print("current session is {}".format(driver.session_id))
             driver.get(url)

@@ -45,9 +45,9 @@ file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'list_post.
 with open(file_path, 'r') as file:
     for line in file:
         try:
-            osint_username = line.split(" ")[1]
+            osint_user_id = line.split(" ")[1]
         except:
-            osint_username = "Anonymous"
+            osint_user_id = "Anonymous"
         url = "https://m.facebook.com/"+line.split(" ")[0]
         driver.get(url)
         time.sleep(3)
@@ -138,7 +138,7 @@ with open(file_path, 'r') as file:
                     elif i == 1:
                         post_data['share_number'] = comment
             post_data['date_of_scraping'] =  datetime.datetime.today()
-            post_data['osint_username'] = osint_username      
+            post_data['osint_user_id'] = osint_user_id      
             # Insert post data into MongoDB
             if 'post_channel' in post_data and 'title' in post_data:
                 post_id = collection.insert_one(post_data).inserted_id

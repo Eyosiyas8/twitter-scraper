@@ -23,9 +23,9 @@ youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=API_
 link = os.path.join(basedir, 'url.txt')
 # Input the YouTube video URL from the user 
 try:
-    osint_username = ''.join(sys.argv[2])
+    osint_user_id = ''.join(sys.argv[2])
 except:
-    osint_username = 'Anonymous'
+    osint_user_id = 'Anonymous'
 
 
 VIDEO_URL = ''.join(sys.argv[1])
@@ -101,7 +101,7 @@ youtube_data = {
     "Comments Count": video_comments,
     "Likes": video_likes,
     "Shares": video_shares,
-    "osint_username": osint_username,
+    "osint_user_id": osint_user_id,
     # "Subscriber Count": subscriber_count,
     "Comments": all_coments
     
