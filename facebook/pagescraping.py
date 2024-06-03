@@ -24,7 +24,7 @@ collection = db['groupscollections']
 # driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()),options=firefox_options)
 chromedriver_autoinstaller.install()
 chrome_options = Options()
-chrome_options.add_argument("--headless")
+# chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-notifications")  # This line disables notifications
 driver = webdriver.Chrome(options=chrome_options)
 # Login to Facebook
@@ -32,10 +32,10 @@ LOGIN_URL = 'https://m.facebook.com/'
 driver.get(LOGIN_URL)
 
 email_element = driver.find_element(By.NAME, 'email')
-email_element.send_keys('getahungeta757@gmail.com')
+email_element.send_keys('sofiyo2112@gmail.com')
 
 password_element = driver.find_element(By.NAME, 'pass')
-password_element.send_keys("Geta@#5077")
+password_element.send_keys("Dunizi@#0102")
 
 login_button = driver.find_element(By.NAME, 'login')
 login_button.click()
