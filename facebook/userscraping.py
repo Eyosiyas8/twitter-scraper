@@ -19,7 +19,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client['facebook-data']
-collection = db['facebookpage']
+collection = db['userscollections']
 # Initialize the Firefox driver
 # driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()),options=firefox_options)
 chromedriver_autoinstaller.install()
