@@ -14,8 +14,8 @@ def scrape_scheduler():
     This function defines the file to run in the interval specified below.
     '''
     # os.system(os.path.join(basedir, 'index.py'))
-    file_path = os.path.join(basedir, '../facebook/pagescraping.py')
-    file_path1 = os.path.join(basedir, '../facebook/userscraping.py')
+    file_path = os.path.join(basedir, 'pagescraping.py')
+    file_path1 = os.path.join(basedir, 'userscraping.py')
     os.system('python3 ' + file_path)
     os.system('python3 ' + file_path1)
 scheduler = BlockingScheduler()
