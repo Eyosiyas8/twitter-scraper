@@ -35,7 +35,7 @@ email_element = driver.find_element(By.NAME, 'email')
 email_element.send_keys('getahungeta757@gmail.com')
 
 password_element = driver.find_element(By.NAME, 'pass')
-password_element.send_keys("0184@$mom")
+password_element.send_keys("Geta@#575077")
 
 login_button = driver.find_element(By.NAME, 'login')
 login_button.click()
