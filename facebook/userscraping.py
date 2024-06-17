@@ -45,7 +45,7 @@ file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'list_user.
 with open(file_path, 'r') as file:
     for line in file:
         try:
-            osint_user_id = line.split(" ")[1]
+            osint_user_id = line.split(" ")[1].strip()
         except:
             osint_user_id = "Anonymous"
         url = "https://m.facebook.com/"+line.split(" ")[0]
