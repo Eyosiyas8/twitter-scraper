@@ -46,6 +46,8 @@ with open(file_path, 'r') as file:
     for line in file:
         try:
             osint_user_id = line.split(" ")[1]
+            if '\n' in osint_user_id:
+                osint_user_id = osint_user_id.replace('\n', '')
         except:
             osint_user_id = "Anonymous"
         url = "https://m.facebook.com/"+line.split(" ")[0]
@@ -138,7 +140,7 @@ with open(file_path, 'r') as file:
                     elif i == 1:
                         post_data['share_number'] = comment
             post_data['date_of_scraping'] =  datetime.datetime.today()
-            post_data['osint_user_id'] = osint_user_id      
+            post_data['osint_user_id'] = osint_user_id
             # Insert post data into MongoDB
             if 'post_channel' in post_data and 'title' in post_data:
                 post_id = collection.insert_one(post_data).inserted_id

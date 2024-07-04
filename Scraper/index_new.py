@@ -166,6 +166,8 @@ try:
             username = lines[i].split(" ")[0]
             try:
                 osint_user_id = lines[i].split(" ")[1]
+                if '\n' in osint_user_id:
+                    osint_user_id = osint_user_id.replace('\n', '')
             except:
                 osint_user_id = "Anonymous"
             url = "https://twitter.com/%s" % username

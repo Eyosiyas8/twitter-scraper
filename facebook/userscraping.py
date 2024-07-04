@@ -46,6 +46,8 @@ with open(file_path, 'r') as file:
     for line in file:
         try:
             osint_user_id = line.split(" ")[1].strip()
+            if '\n' in osint_user_id:
+                osint_user_id = osint_user_id.replace('\n', '')
         except:
             osint_user_id = "Anonymous"
         url = "https://m.facebook.com/"+line.split(" ")[0]
