@@ -1,6 +1,6 @@
 __pycache__/
 src/
-.env/
+env/
 csv_files/
 facebook/list_user.txt
 Scraper/new.py
