@@ -1,6 +1,6 @@
 from urllib.request import urlopen
-from elasticsearch import Elasticsearch, helpers
-import urllib3
+# from elasticsearch import Elasticsearch, helpers
+# import urllib3
 from timeline_scraper_new import *
 # from timeline_tweet_scraper import *
 from tweet_filter import *
@@ -28,7 +28,7 @@ collection = db[db_collection]
 # Initializing different variables
 tweet_ids = set()
 # csv_row1 = []
-es=Elasticsearch([{'host':'localhost:9200','port':9200,'scheme':"http"}])
+# es=Elasticsearch([{'host':'localhost:9200','port':9200,'scheme':"http"}])
 
 # Structuring the data generated from the csv files to be inserted to the database
 

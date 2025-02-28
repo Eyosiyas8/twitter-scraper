@@ -10,3 +10,5 @@ apscheduler
 chromedriver-autoinstaller
 logging 
 configparser
+requests
+beautifulsoup4
