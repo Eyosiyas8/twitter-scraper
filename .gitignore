@@ -1,15 +1,7 @@
-<<<<<<< HEAD
-twint+token.txt
-post-report/twitter-reporting-ids.txt
-post-report/twitter-reporting-ids.csv
-__pycache__
-.idea
-.raw
-=======
 __pycache__/
 src/
+.env/
 csv_files/
-facebook/list_post.txt
 facebook/list_user.txt
 Scraper/new.py
 Scraper/dictionary.txt
@@ -18,7 +10,5 @@ Dependancies/env_var.py
 Authentication/
 trial.py
 chromedriver/
-log/
 Pipfile
 .raw
->>>>>>> d18517b382f768b30bbd03bd618110c1e62663b1
