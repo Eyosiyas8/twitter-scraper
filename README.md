@@ -20,3 +20,7 @@ pip3 install --upgrade -e git+https://github.com/twintproject/twint.git@origin/m
 ### For more information on twint
 
 https://github.com/twintproject/twint
+
+docker build --tag 'twitter-scraper' .
+docker run twitter-scraper
+docker run -rm twitter-scraper
