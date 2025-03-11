@@ -8,16 +8,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from log import error_log
 
-# Set Chrome binary path for Docker
-CHROME_BINARY_PATH = "/usr/bin/google-chrome-stable"  # Ensure Selenium finds Chrome in Docker
-CHROMEDRIVER_PATH = "/usr/local/bin/chromedriver"  # Ensure correct ChromeDriver path
-
 def check_session(driver, cookies):
-    """Check if session is valid by verifying the presence of a logged-in element."""
+    # Check session by visiting a page that requires login and verifying elements
     driver.get("https://twitter.com/settings/account")
     time.sleep(2)  # Wait for the page to load
 
@@ -30,7 +25,6 @@ def check_session(driver, cookies):
         return False
 
 def load_cookies(file_path):
-    """Load cookies from a pickle file."""
     try:
         with open(file_path, 'rb') as file:
             cookies = pickle.load(file)
@@ -42,7 +36,6 @@ def load_cookies(file_path):
         return None
 
 def login(driver, cookies):
-    """Log in to Twitter using stored cookies."""
     driver.get("https://twitter.com/login")  # Replace with actual login URL
     time.sleep(2)  # Wait for the login page to load
 
@@ -54,29 +47,19 @@ def login(driver, cookies):
 
     return check_session(driver, cookies)
 
-# Auto-install ChromeDriver
+# def main():
 chromedriver_autoinstaller.install()
-
-# Set up Chrome options
 options = Options()
-options.binary_location = CHROME_BINARY_PATH  # Explicitly set the Chrome binary path
 options.add_argument('--headless')  # Uncomment to run headless
-options.add_argument('--no-sandbox')  # Required for Docker
-options.add_argument('--disable-dev-shm-usage')  # Prevent crashes due to limited /dev/shm space
+driver = webdriver.Chrome(options=options)
 
-# Initialize WebDriver with explicit ChromeDriver path
-service = Service(CHROMEDRIVER_PATH)
-driver = webdriver.Chrome(service=service, options=options)
-
-# List of cookie files to try
 my_list = ['cookies.pkl', 'cookies1.pkl']
-num_selections = 1  # Number of cookies to randomly select
+num_selections = 1
 cookie_selected = None
-max_retries = 3  # Number of retries per cookie file
+max_retries = 3
 
-# Attempt to log in with available cookies
 while not cookie_selected and my_list:
-    new_list = random.sample(my_list, num_selections)  # Randomly select a cookie file
+    new_list = random.sample(my_list, num_selections)
     new_cookie_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), new_list[0])
     cookies = load_cookies(new_cookie_path)
 
@@ -84,13 +67,13 @@ while not cookie_selected and my_list:
         my_list.remove(new_list[0])  # Remove invalid cookie file from list
         continue
 
-    # Try logging in with the selected cookie
     for attempt in range(max_retries):
         if login(driver, cookies):
             cookie_selected = new_list[0]  # Successful login, exit the loop
-            print(f"Successfully logged in using cookies from: {cookie_selected}")
+            print(cookies)
             break
         else:
+            print(cookies)
             print(f"Login attempt {attempt + 1} failed. Retrying...")
             time.sleep(2)
 
@@ -99,11 +82,11 @@ while not cookie_selected and my_list:
         if not my_list:
             break  # No more cookies to try
 
-# Print login status
 if cookie_selected:
     print("Successfully logged in with cookie:", cookie_selected)
 else:
     print("Failed to log in with all cookies")
 
-# Close WebDriver to free resources
-driver.quit()
+
+# if __name__ == "__main__":
+#     main()
