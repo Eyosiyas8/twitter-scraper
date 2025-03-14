@@ -16,12 +16,25 @@ from reply_scraper import *
 import urllib.request
 import urllib.error
 
-# Initializing mongo db client
-db_connection = 'mongodb://localhost:27017/'
+# # Initializing mongo db client
+# db_connection = 'mongodb://localhost:27017/'
+# db_client = 'twitter-data'
+# db_collection = 'twitter'
+# client = MongoClient(db_connection)
+# print(db_connection)
+# db = client[db_client]
+# collection = db[db_collection]
+
+# Use environment variable for MongoDB connection (default to localhost for local testing)
+db_connection = os.getenv("MONGO_URI", "mongodb://mongodb:27017/")
 db_client = 'twitter-data'
 db_collection = 'twitter'
+
+# Initialize MongoDB client
 client = MongoClient(db_connection)
-print(db_connection)
+print(f"Connecting to MongoDB at {db_connection}")
+
+# Select database and collection
 db = client[db_client]
 collection = db[db_collection]
 

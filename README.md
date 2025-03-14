@@ -23,5 +23,6 @@ https://github.com/twintproject/twint
 
 docker build --tag twitter-scraper .
 docker run twitter-scraper
-docker run --rm twitter-scraper
+docker run -rm twitter-scraper
 
+docker-compose up --build
