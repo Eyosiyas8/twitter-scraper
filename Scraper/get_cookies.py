@@ -50,7 +50,10 @@ def login(driver, cookies):
 # def main():
 chromedriver_autoinstaller.install()
 options = Options()
-options.add_argument('--headless')  # Uncomment to run headless
+options.add_argument("--headless=new")  # Enables the new headless mode
+options.add_argument("--no-sandbox")  # Helps in some server environments
+options.add_argument("--disable-dev-shm-usage")  # Prevents crashes due to limited resources
+options.add_argument("--disable-gpu")  # Required for headless mode
 driver = webdriver.Chrome(options=options)
 
 my_list = ['cookies.pkl', 'cookies1.pkl']
